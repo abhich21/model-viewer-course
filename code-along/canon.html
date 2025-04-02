@@ -36,6 +36,7 @@
         width: 80%;
         height: 600px;
         margin: 0 15%;
+        --poster-color: transparent;
     }
     .btns{
       position:absolute;
@@ -92,7 +93,28 @@
                 src="../assets/canon-at.glb" 
                 alt="A 3D model of a retro Canon AT camera" 
                 environment-image="../assets/hdr/apartment.hdr"
-                camera-controls ></model-viewer>
+                camera-controls
+                poster="blank.png"
+                interaction-prompt="none"
+                ar ar-modes="webxr scene-viewer quick-look" ar-placement="wall"></model-viewer>
+
+  <button id="orbit-btn" onclick="getOrbit()">Get Orbit</button>
+  <div class="btns">
+    <button class="round-btn" onclick="setOrbit('-0.69rad 1.39rad 0.25m')">Front</button>
+    <button class="round-btn" onclick="setOrbit('-3.016rad 1.48rad 0.25m')">Viewfinder</button>
+    <button class="round-btn" onclick="setOrbit('-5.4rad 1.45rad 0.19m')">Lens</button>
+  </div>
   
+  <script>
+    const modelViewer = document.querySelector("#canon");
+
+    function getOrbit(){
+      console.log(`getOrbit ${modelViewer.getCameraOrbit()}`)
+    }
+
+    function setOrbit(orbit) {
+      modelViewer.cameraOrbit = orbit;
+    }
+  </script>
 </body>
 </html>
