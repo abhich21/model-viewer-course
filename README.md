@@ -1,2 +1,2 @@
 # model-viewer-course
-Resources for my &lt;model-viewer> course
+Resources for &lt;model-viewer> course
