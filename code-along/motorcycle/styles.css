@@ -2,11 +2,15 @@
   display: none;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 model-viewer {
@@ -57,7 +61,7 @@ model-viewer {
   color: rgba(0, 0, 0, 0.8);
   display: block;
   font-family: Futura, Helvetica Neue, sans-serif;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 700;
   left: calc(100% + 1em);
   max-width: 128px;
