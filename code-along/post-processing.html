@@ -32,7 +32,159 @@
 </head>
 
 <body>
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+        </script>
     
     <!-- Import the component -->
+     <!-- For normal modal-viewer -->
+     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.4.0/dist/model-viewer-module.min.js"></script>
+     <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.3.0/dist/model-viewer-effects.min.js"></script>
+
+    <model-viewer id="knight" src="../assets/knight.glb" alt="A 3D model of a cartoon animated knight dancing" camera-controls autoplay animation-name="Dance" animation-crossfade-duration="2000"
+    ar-modes="webxr scene-viewer quick-look" ar>
+        <effect-composer>
+            <pixelate-effect></pixelate-effect>
+
+        </effect-composer>
+    </model-viewer>
+    
+    <script type="module">
+        // import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+        // const modelViewer = document.querySelector("model-viewer#knight");
+
+
+        // const pixelate = modelViewer.querySelector('pixelate-effect');
+
+        // const gui = new GUI();
+        // gui.add(pixelate, 'granularity', 1, 30, 1).onChange( value => {
+        //     pixelate.granularity = value;
+        // })
+
+        
+        // modelViewer.addEventListener("load", ev => {
+        // let material = modelViewer.model.getMaterialByName('CubeMat');
+        // material.pbrMetallicRoughness.setBaseColorFactor([1,1,1,0]);
+        // // If you don't know animation applied use this 
+        // // animNames = modelViewer.availableAnimations;
+        // });
+        import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+        const options = {
+            bloom: { enabled: false, strength: 1, threshold: 1, radius: 0.85 },
+            pixelate: { enabled: true, granularity: 10 },
+            colorGrade: { enabled: false, tonemapping: 'aces_filmic', brightness: 0, contrast: 0, saturation: 0, hue: 0 },
+            outline: { enabled: false, strength: 1, color: '#ffffff', smoothing: 1 },
+            glitch: { enabled: false, strength: 0.5, mode: 'sporadic' },
+            ssao: { enabled: false, strength: 2 },
+            smaa: { enabled: false, quality: 'medium' }
+        }
+        const gui = new GUI({ title: 'Effects' });
+        const ui = {};
+
+        ui.bloom = gui.addFolder('bloom').close();
+        ui.bloom.add( options.bloom, 'enabled' ).onChange( value => {
+            bloom.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.bloom.add( options.bloom, 'strength', 0, 10).onChange( value => {
+            bloom.strength = value;
+        });
+        ui.bloom.add( options.bloom, 'threshold', 0, 1).onChange( value => {
+            bloom.threshold = value;
+        });
+        ui.bloom.add( options.bloom, 'radius', 0, 1).onChange( value => {
+            bloom.radius = value;
+        });
+
+        ui.pixelate = gui.addFolder('pixelate');
+        ui.pixelate.add( options.pixelate, 'enabled' ).onChange( value => {
+            pixelate.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.pixelate.add( options.pixelate, 'granularity', 1, 30, 1).onChange( value => {
+            pixelate.granularity = value;
+        });
+    
+        ui.colorGrade = gui.addFolder('color grade').close();
+        ui.colorGrade.add( options.colorGrade, 'enabled' ).onChange( value => {
+            colorGrade.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.colorGrade.add( options.colorGrade, 'tonemapping', ['reinhard', 'reinhard2', 'reinhard2_adaptive', 'optimized_cineon', 'aces_filmic', 'none']).onChange( value => {
+            colorGrade.tonemapping = value;
+        });
+        ui.colorGrade.add( options.colorGrade, 'brightness', 0, 1).onChange( value => {
+            colorGrade.brightness = value;
+        });
+        ui.colorGrade.add( options.colorGrade, 'contrast', -1, 1).onChange( value => {
+            colorGrade.contrast = value;
+        });
+        ui.colorGrade.add( options.colorGrade, 'saturation', -1, 1).onChange( value => {
+            colorGrade.satruration = value;
+        });
+        ui.colorGrade.add( options.colorGrade, 'hue', 0, Math.PI*2).onChange( value => {
+            colorGrade.hue = value;
+        });
+    
+        ui.outline = gui.addFolder('outline').close();
+        ui.outline.add( options.outline, 'enabled' ).onChange( value => {
+            outline.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.outline.add( options.outline, 'strength', 0, 10).onChange( value => {
+            outline.strength = value;
+        });
+        ui.outline.addColor( options.outline, 'color').onChange( value => {
+            outline.color = value;
+        });
+        ui.outline.add( options.outline, 'smoothing', 0, 6).onChange( value => {
+            outline.smoothing = value;
+        });
+    
+        ui.glitch = gui.addFolder('glitch').close();
+        ui.glitch.add( options.glitch, 'enabled' ).onChange( value => {
+            glitch.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.glitch.add( options.glitch, 'strength', 0, 1).onChange( value => {
+            glitch.strength = value;
+        });
+        ui.glitch.add( options.glitch, 'mode', ['sporadic', 'constant']).onChange( value => {
+            glitch.mode = value;
+        });
+    
+        ui.ssao = gui.addFolder('ssao').close();
+        ui.ssao.add( options.ssao, 'enabled' ).onChange( value => {
+            ssao.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.ssao.add( options.ssao, 'strength', 0, 100).onChange( value => {
+            ssao.strength = value;
+        });
+
+        ui.smaa = gui.addFolder('smaa').close();
+        ui.smaa.add( options.smaa, 'enabled' ).onChange( value => {
+            smaa.blendMode = ( value ) ? 'default' : "skip";
+        });
+        ui.smaa.add( options.smaa, 'quality', ['low','medium','high','ultra']).onChange( value => {
+            smaa.quality = value;
+        });
+
+        const modelViewer = document.querySelector("model-viewer#knight");
+        const bloom = modelViewer.querySelector('bloom-effect');
+        const pixelate = modelViewer.querySelector('pixelate-effect');
+        const colorGrade = modelViewer.querySelector('color-grade-effect');
+        const outline = modelViewer.querySelector('outline-effect');
+        const glitch = modelViewer.querySelector('glitch-effect');
+        const ssao = modelViewer.querySelector('ssao-effect');
+        const smaa = modelViewer.querySelector('smaa-effect');
+
+        modelViewer.addEventListener("load", (ev) => {
+          let material = modelViewer.model.getMaterialByName('CubeMat');
+          material.pbrMetallicRoughness.setBaseColorFactor([1,1,1,0]);
+        })
+    </script>
 </body>
 </html>
